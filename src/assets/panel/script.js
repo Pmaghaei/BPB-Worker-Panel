@@ -381,24 +381,20 @@ function handlePortChange(event) {
 
 function handleFragmentMode() {
     const fragmentMode = document.getElementById("fragmentMode").value;
+    const formDataObj = Object.fromEntries(globalThis.initialFormData.entries());
     const inputs = [
         "fragmentLengthMin",
         "fragmentLengthMax",
         "fragmentIntervalMin",
         "fragmentIntervalMax"
-    ].map(id => document.getElementById(id));
-
-    inputs.forEach(elm => {
-        fragmentMode !== "custom"
-            ? elm.setAttribute('readonly', 'true')
-            : elm.removeAttribute('readonly');
-    });
+    ];
 
     const formDataObj = Object.fromEntries(globalThis.initialFormData.entries());
     const configs = {
         low: [100, 200, 1, 1],
         medium: [50, 100, 1, 5],
         high: [10, 20, 10, 20],
+<<<<<<< HEAD
         custom: [
             formDataObj.fragmentLengthMin,
             formDataObj.fragmentLengthMax,
@@ -408,6 +404,18 @@ function handleFragmentMode() {
     };
 
     inputs.forEach((input, i) => input.value = configs[fragmentMode][i]);
+=======
+        custom: inputs.map(id => formDataObj[id])
+    };
+
+    inputs.forEach((id, index) => {
+        const elm = document.getElementById(id);
+        elm.value = configs[fragmentMode][index];
+        fragmentMode !== "custom"
+            ? elm.setAttribute('readonly', 'true')
+            : elm.removeAttribute('readonly');
+    });
+>>>>>>> dev
 }
 
 function resetSettings() {
