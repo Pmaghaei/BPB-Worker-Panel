@@ -87,8 +87,6 @@ function populatePanel(proxySettings) {
         if (rowsCount) element.rows = rowsCount;
         element.value = value;
     });
-
-    handleFragmentMode();
 }
 
 function initiateForm() {
@@ -98,7 +96,6 @@ function initiateForm() {
 
     configForm.addEventListener('input', enableApplyButton);
     configForm.addEventListener('change', enableApplyButton);
-
     const textareas = document.querySelectorAll("textarea");
 
     textareas.forEach(textarea => {
@@ -107,6 +104,8 @@ function initiateForm() {
             this.style.height = `${this.scrollHeight}px`;
         });
     });
+
+    handleFragmentMode();
 }
 
 function hasFormDataChanged() {
@@ -395,15 +394,20 @@ function handleFragmentMode() {
             : elm.removeAttribute('readonly');
     });
 
+    const formDataObj = Object.fromEntries(globalThis.initialFormData.entries());
     const configs = {
         low: [100, 200, 1, 1],
         medium: [50, 100, 1, 5],
-        high: [10, 20, 10, 20]
+        high: [10, 20, 10, 20],
+        custom: [
+            formDataObj.fragmentLengthMin,
+            formDataObj.fragmentLengthMax,
+            formDataObj.fragmentIntervalMin,
+            formDataObj.fragmentIntervalMax
+        ]
     };
 
-    if (configs[fragmentMode]) {
-        inputs.forEach((input, i) => input.value = configs[fragmentMode][i]);
-    }
+    inputs.forEach((input, i) => input.value = configs[fragmentMode][i]);
 }
 
 function resetSettings() {
